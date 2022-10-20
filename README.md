@@ -1,4 +1,4 @@
-# auxilium-frt
+# auxilium-vue
 
 ## Project setup
 ```
