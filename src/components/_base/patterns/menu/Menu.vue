@@ -9,8 +9,9 @@
         <router-link :to="{ name: 'Home' }">Home</router-link>
       </div>
       <div class="menu--left__link">
-        <!-- <router-link>Sobre o projeto</router-link> -->
-        <a>Sobre o projeto</a>
+        <router-link :to="{ name: 'About the Project' }"
+          >Sobre o projeto</router-link
+        >
       </div>
       <div class="menu--left__link">
         <!-- <router-link>Chats</router-link> -->
@@ -44,6 +45,7 @@ export default {
   font-size: 20px;
   color: white;
   font-weight: 500;
+  text-align: center;
 
   &--left {
     display: flex;
