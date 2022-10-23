@@ -15,24 +15,29 @@
       </div>
       <div class="menu--left__link">
         <!-- <router-link>Chats</router-link> -->
-        <a>Chats</a>
       </div>
       <div class="menu--left__link">
-        <!-- <router-link> Profissionais</router-link> -->
-        <a> Profissionais</a>
+        <!-- <router-link>Profissionais</router-link> -->
       </div>
     </div>
     <div class="menu--right">
       <div class="menu--right__logoff"><b-icon icon="gear"></b-icon></div>
-      <div class="menu--right__logoff">Sair</div>
+      <div class="menu--right__logoff" @click="logoff()">Sair</div>
     </div>
   </div>
 </template>
 
 <script>
+import Cookie from "js-cookie";
+
 export default {
   name: "Menu",
-  components: {},
+  methods: {
+    logoff() {
+      Cookie.remove("aux_token");
+      this.$router.push({ name: "Login" });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

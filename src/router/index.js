@@ -1,10 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import AboutProject from "../views/AboutProject.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import RegisterProfessional from "../views/RegisterProfessional.vue";
+import Guard from "../services/middlewares.js";
+import Home from "../views/Home";
+import AboutProject from "../views/AboutProject";
+import Login from "../views/Login";
+import RegisterPatient from "../views/register/RegisterPatient";
+import RegisterProfessional from "../views/register/RegisterProfessional";
+import Register from "../views/register/Register";
+import RecoverPassword from "../views/recover-password/RecoverPassword";
+import ProfessionalList from "../views/ProfessionalList";
 
 Vue.use(VueRouter);
 
@@ -15,14 +19,14 @@ const routes = [
     component: Login,
   },
   {
-    path: "/home",
-    name: "Home",
-    component: Home,
+    path: "/register-user",
+    name: "Register User",
+    component: RegisterPatient,
   },
   {
-    path: "/about",
-    name: "About the Project",
-    component: AboutProject,
+    path: "/register-professional",
+    name: "Register Professional",
+    component: RegisterProfessional,
   },
   {
     path: "/register",
@@ -30,9 +34,26 @@ const routes = [
     component: Register,
   },
   {
-    path: "/register",
-    name: "Register Professional",
-    component: RegisterProfessional,
+    path: "/recover-password",
+    name: "Recover Password",
+    component: RecoverPassword,
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+    beforeEnter: Guard.auth,
+  },
+  {
+    path: "/about",
+    name: "About the Project",
+    component: AboutProject,
+    beforeEnter: Guard.auth,
+  },
+  {
+    path: "/professional-list",
+    name: "Professional List",
+    component: ProfessionalList,
   },
 ];
 

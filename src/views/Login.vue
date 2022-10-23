@@ -10,20 +10,29 @@
           <input v-model="email" type="email" placeholder="LOGIN" />
         </div>
 
-        <div class="login--container-form_input">
+        <form method="POST" class="login--container-form_input">
           <input v-model="password" type="password" placeholder="SENHA" />
-          <a href="">Esqueci minha senha</a>
-        </div>
-
-        <div class="login--container-form_send">
-          <button class="submit" type="submit">ENTRAR</button>
-        </div>
+          <router-link :to="{ name: 'Recover Password' }"
+            >Esqueci minha senha</router-link
+          >
+        </form>
       </b-col>
+      <div class="login--container-form_send">
+        <button class="submit" type="submit" @click="actionLogin()">
+          ENTRAR
+        </button>
+        <button class="submit" @click="$router.push({ name: 'Register' })">
+          CADASTRAR-SE
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import Cookie from "js-cookie";
+
 export default {
   name: "Login",
   components: {},
@@ -34,7 +43,33 @@ export default {
     };
   },
 
-  methods: {},
+  methods: {
+    /**
+     * @param {String} email
+     * @param {String} password
+     */
+    actionLogin() {
+      Cookie.remove("aux_token");
+
+      axios
+        .post(
+          "https://api-auxilium.herokuapp.com/auth/authenticate",
+          {
+            email: this.email,
+            password: this.password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          Cookie.set("aux_token", res.data.token);
+          this.$router.push({ name: "Home" });
+        });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -64,6 +99,7 @@ export default {
 
       &_logo {
         margin-bottom: 60px;
+        text-align: center;
       }
 
       &_input {
@@ -92,20 +128,22 @@ export default {
       }
 
       &_send {
+        display: block;
         margin: 60px auto 20px auto;
         margin-left: auto;
         margin-right: auto;
-        width: 100%;
+        width: 300px;
 
         button {
           padding: 20px 5px;
+          width: 300px;
+          margin: 5px;
           font-size: 14px;
           border: none;
           background-color: #3f3e9a;
           color: white;
           border-radius: 0px;
           font-weight: 600;
-          width: 200px;
 
           &:hover {
             background: #008eaa;

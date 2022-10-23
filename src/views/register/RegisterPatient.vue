@@ -2,7 +2,7 @@
   <div class="register">
     <div class="register--container">
       <p class="register--container_return">
-        <a href="$">Já possuo login</a>
+        <router-link :to="{ name: 'Login' }">Já possuo login</router-link>
       </p>
       <div class="register--container-form">
         <h1 class="register--container_title">Cadastre sua conta</h1>
@@ -11,29 +11,88 @@
         </p>
         <div class="register--container-form_input">
           <p class="label">Nickname <span class="required">*</span></p>
-          <input type="text" placeholder="Nome" required />
+          <input v-model="name" type="text" placeholder="Nome" required />
         </div>
         <div class="register--container-form_input">
           <p class="label">E-mail <span class="required">*</span></p>
-          <input type="email" placeholder="exemplo@exemplo.com" required />
+          <input
+            v-model="email"
+            type="email"
+            placeholder="exemplo@exemplo.com"
+            required
+          />
         </div>
         <div class="register--container-form_input">
           <p class="label">Senha <span class="required">*</span></p>
-          <input type="password" placeholder="Exemplo@123" required />
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Exemplo@123"
+            required
+          />
         </div>
 
         <div class="register--container-form_send">
-          <button class="submit" type="submit">CADASTRAR</button>
+          <button
+            :disabled="disabledSave"
+            class="submit"
+            type="submit"
+            @click="newUser"
+          >
+            CADASTRAR
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+
 export default {
-  name: "Register",
+  name: "RegisterPatient",
   data() {
-    return {};
+    return {
+      name: "",
+      email: "",
+      password: "",
+      type: false,
+    };
+  },
+  computed: {
+    disabledSave() {
+      if (this.name === "" || this.email === "" || this.password === "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  methods: {
+    /**
+     * Método de cadastro de usuário paciente
+     * @param {String} name Nome do usuário
+     * @param {String} email Email do usuário
+     * @param {String} password Senha do usuário
+     * @param {Boolean} type se o usuário é profissional ou não
+     *
+     * @return Response
+     */
+    newUser() {
+      axios
+        .post("https://api-auxilium.herokuapp.com/auth/register", {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          professional: this.type,
+        })
+        .then((res) => {
+          if (res) {
+            console.log("Usuário registrado");
+            this.$router.push({ name: "Login" });
+          }
+        });
+    },
   },
 };
 </script>
@@ -47,6 +106,7 @@ export default {
   background-image: linear-gradient(to bottom, #008eaa, #73cef4, #fff);
   background-repeat: no-repeat;
   background-size: 100% 20em;
+  text-align: center;
 
   &--container {
     width: 700px;
@@ -58,7 +118,7 @@ export default {
 
     &_return {
       font-size: 16px;
-      float: left;
+      text-align: left;
       a {
         text-decoration: none;
         color: #008eaa;
