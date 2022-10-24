@@ -53,7 +53,7 @@ export default {
 
       axios
         .post(
-          "https://api-auxilium.herokuapp.com/auth/authenticate",
+          "https://api-auxilium.herokuapp.com/user/authenticate",
           {
             email: this.email,
             password: this.password,

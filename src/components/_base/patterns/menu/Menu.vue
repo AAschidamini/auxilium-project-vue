@@ -21,7 +21,10 @@
       </div>
     </div>
     <div class="menu--right">
-      <div class="menu--right__logoff"><b-icon icon="gear"></b-icon></div>
+      <div class="menu--right__logoff">
+        <b-icon icon="person-fill"></b-icon>
+        Conta
+      </div>
       <div class="menu--right__logoff" @click="logoff()">Sair</div>
     </div>
   </div>

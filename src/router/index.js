@@ -4,11 +4,10 @@ import Guard from "../services/middlewares.js";
 import Home from "../views/Home";
 import AboutProject from "../views/AboutProject";
 import Login from "../views/Login";
-import RegisterPatient from "../views/register/RegisterPatient";
-import RegisterProfessional from "../views/register/RegisterProfessional";
 import Register from "../views/register/Register";
 import RecoverPassword from "../views/recover-password/RecoverPassword";
 import ProfessionalList from "../views/ProfessionalList";
+import Settings from "../views/Settings";
 
 Vue.use(VueRouter);
 
@@ -17,16 +16,6 @@ const routes = [
     path: "/",
     name: "Login",
     component: Login,
-  },
-  {
-    path: "/register-user",
-    name: "Register User",
-    component: RegisterPatient,
-  },
-  {
-    path: "/register-professional",
-    name: "Register Professional",
-    component: RegisterProfessional,
   },
   {
     path: "/register",
@@ -54,6 +43,11 @@ const routes = [
     path: "/professional-list",
     name: "Professional List",
     component: ProfessionalList,
+  },
+  {
+    path: "/settings",
+    name: "Dados do usuário",
+    component: Settings,
   },
 ];
 

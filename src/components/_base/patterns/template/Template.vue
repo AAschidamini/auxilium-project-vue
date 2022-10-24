@@ -33,6 +33,13 @@ export default {
     margin-right: auto;
     margin-top: 50px;
     background: #ececec;
+
+    &__title {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 30px;
+      width: 700px;
+    }
   }
 }
 </style>

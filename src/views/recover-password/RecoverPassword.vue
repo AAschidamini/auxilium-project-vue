@@ -88,7 +88,7 @@ export default {
      */
     sendToken() {
       axios
-        .post("https://api-auxilium.herokuapp.com/auth/forgot_password", {
+        .post("https://api-auxilium.herokuapp.com/user/forgot_password", {
           email: this.email,
         })
         .then((res) => {
@@ -108,7 +108,7 @@ export default {
      */
     resetPassword() {
       axios
-        .post("https://api-auxilium.herokuapp.com/auth/reset_password", {
+        .post("https://api-auxilium.herokuapp.com/user/reset_password", {
           token: this.token,
           password: this.newPassword,
         })

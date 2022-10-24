@@ -4,20 +4,54 @@
       <p class="register--container_return">
         <router-link :to="{ name: 'Login' }">Já possuo login</router-link>
       </p>
-      <h1 class="register--container_title">Cadastre sua conta</h1>
-      <p class="register--container_description">
-        Escolha o tipo de cadastro para proceguir..
-      </p>
-      <div class="register--container_links">
-        <div class="register--container_links-item">
-          <router-link :to="{ name: 'Register User' }"
-            >Registrar-se como usuário</router-link
-          >
+      <div class="register--container-form">
+        <h1 class="register--container_title">Cadastre sua conta</h1>
+        <p class="register--container_description">
+          Preencha todos os campos obrigatórios para completar o registro.
+        </p>
+        <div class="register--container-form_input">
+          <p class="label">Nome <span class="required">*</span></p>
+          <input v-model="name" type="text" placeholder="Nome" required />
         </div>
-        <div class="register--container_links-item">
-          <router-link :to="{ name: 'Register Professional' }"
-            >Registrar-se como profissional</router-link
+        <div class="register--container-form_input">
+          <p class="label">E-mail <span class="required">*</span></p>
+          <input
+            v-model="email"
+            type="email"
+            placeholder="exemplo@exemplo.com"
+            required
+          />
+        </div>
+        <div class="register--container-form_input">
+          <p class="label">Senha <span class="required">*</span></p>
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Exemplo@123"
+            required
+          />
+        </div>
+
+        <div class="register--container-form_input checkbox">
+          <p class="checkbox-label">
+            É um profissional e deseja se voluntariar?
+          </p>
+          <input
+            v-model="professional"
+            type="checkbox"
+            class="checkbox-input"
+          />
+        </div>
+
+        <div class="register--container-form_send">
+          <button
+            :disabled="disabledSave"
+            class="submit"
+            type="submit"
+            @click="newUser"
           >
+            CADASTRAR
+          </button>
         </div>
       </div>
     </div>
@@ -33,45 +67,35 @@ export default {
       name: "",
       email: "",
       password: "",
-      type: true,
-      crm: "",
-      description: "",
-      contact: "",
+      professional: false,
     };
   },
-
   computed: {
     disabledSave() {
-      if (
-        this.name === "" ||
-        this.email === "" ||
-        this.password === "" ||
-        this.crm === ""
-      ) {
+      if (this.name === "" || this.email === "" || this.password === "") {
         return true;
       } else {
         return false;
       }
     },
   },
-
   methods: {
     /**
-     * Método de cadastro de usuário
+     * Método de cadastro de usuário paciente
      * @param {String} name Nome do usuário
      * @param {String} email Email do usuário
      * @param {String} password Senha do usuário
-     * @param {Boolean} type se o usuário é profissional ou não
+     * @param {Boolean} professional se o usuário é profissional ou não
      *
      * @return Response
      */
     newUser() {
       axios
-        .post("https://api-auxilium.herokuapp.com/auth/register", {
+        .post("https://api-auxilium.herokuapp.com/user/register", {
           name: this.name,
           email: this.email,
           password: this.password,
-          professional: this.type,
+          professional: this.professional,
         })
         .then((res) => {
           if (res) {
@@ -80,27 +104,6 @@ export default {
           }
         });
     },
-
-    /**
-     * Método de cadastro dos dados do profissional
-     * @param {Number} crm CRM médico para atuar
-     * @param {String} description Descrição adicional
-     * @param {String} contact Contato do profissional
-     *
-     * @return Response
-     */
-    registerProfessional() {
-      axios.post("https://api-auxilium.herokuapp.com/professional", {
-        crm: this.crm,
-        contact: this.contact,
-        description: this.description,
-      });
-    },
-  },
-
-  sendData() {
-    this.registerProfessional();
-    this.newUser();
   },
 };
 </script>
@@ -123,7 +126,6 @@ export default {
     margin-right: auto;
     margin-top: 60px;
     background-color: #f3f3f3;
-    height: 370px;
 
     &_return {
       font-size: 16px;
@@ -143,27 +145,66 @@ export default {
       font-size: 12px;
     }
 
-    &_links {
-      &-item {
-        width: 400px;
-        padding: 20px 5px;
-        margin-top: 10px;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 14px;
-        border: none;
-        background-color: #3f3e9a;
-        border-radius: 0px;
+    &-form {
+      width: 400px;
+      margin: 20px auto;
+      margin-left: auto;
+      margin-right: auto;
 
-        &:hover {
-          background: #008eaa;
+      &_input {
+        margin-bottom: 15px;
+
+        .label {
+          font-size: 16px;
+          float: left;
         }
 
-        a {
+        .required {
+          color: red;
+        }
+
+        input {
+          padding: 15px 10px;
+          width: 100%;
+          border: none;
+          border-radius: 0;
+        }
+        input::placeholder {
+          font-size: 14px;
+        }
+      }
+      .checkbox {
+        display: flex;
+
+        &-input {
+          width: 20px !important;
+          margin: 10px 20px;
+        }
+        &-label {
+          text-align: right;
+          padding: 20px 0 0px 0;
+        }
+      }
+
+      &_send {
+        margin: 60px auto 20px auto;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+
+        button {
+          padding: 20px 5px;
+          font-size: 14px;
+          border: none;
+          background-color: #3f3e9a;
           color: white;
+          border-radius: 0px;
           font-weight: 600;
-          padding: 20px 70px;
-          text-decoration: none;
+          width: 200px;
+
+          &:hover {
+            background: #008eaa;
+          }
         }
       }
     }
