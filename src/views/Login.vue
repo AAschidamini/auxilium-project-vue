@@ -10,12 +10,12 @@
           <input v-model="email" type="email" placeholder="LOGIN" />
         </div>
 
-        <form method="POST" class="login--container-form_input">
+        <div class="login--container-form_input">
           <input v-model="password" type="password" placeholder="SENHA" />
           <router-link :to="{ name: 'Recover Password' }"
             >Esqueci minha senha</router-link
           >
-        </form>
+        </div>
       </b-col>
       <div class="login--container-form_send">
         <button class="submit" type="submit" @click="actionLogin()">
@@ -66,7 +66,10 @@ export default {
         )
         .then((res) => {
           Cookie.set("aux_token", res.data.token);
-          this.$router.push({ name: "Home" });
+          Cookie.set("user", res.data.user.email);
+          Cookie.set("id", res.data.user._id);
+
+          this.$router.push({ path: "/about" });
         });
     },
   },

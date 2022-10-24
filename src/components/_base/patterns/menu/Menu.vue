@@ -14,16 +14,20 @@
         >
       </div>
       <div class="menu--left__link">
-        <!-- <router-link>Chats</router-link> -->
+        <router-link :to="{ name: 'Public Chat' }">Chats</router-link>
       </div>
       <div class="menu--left__link">
-        <!-- <router-link>Profissionais</router-link> -->
+        <router-link :to="{ name: 'Professional List' }"
+          >Profissionais</router-link
+        >
       </div>
     </div>
     <div class="menu--right">
       <div class="menu--right__logoff">
-        <b-icon icon="person-fill"></b-icon>
-        Conta
+        <router-link :to="{ name: 'Dados do usuário' }">
+          <b-icon icon="person-fill"></b-icon>
+          Conta
+        </router-link>
       </div>
       <div class="menu--right__logoff" @click="logoff()">Sair</div>
     </div>
@@ -38,6 +42,8 @@ export default {
   methods: {
     logoff() {
       Cookie.remove("aux_token");
+      Cookie.remove("user");
+      Cookie.remove("id");
       this.$router.push({ name: "Login" });
     },
   },

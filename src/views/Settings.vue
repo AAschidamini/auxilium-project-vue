@@ -9,26 +9,48 @@
             troca de senha, será necessário efetuar logoff e ir em "Esqueci
             minha senha".
           </p>
+          <button
+            v-if="stateUser === false"
+            class="settings--user__state"
+            @click="stateUser = true"
+          >
+            Editar
+          </button>
           <div class="settings--user__input">
-            <p class="label">Nome completo <span class="required">*</span></p>
-            <input v-model="name" type="text" placeholder="Nome" required />
+            <p class="label">Nickname</p>
+            <input
+              v-model="name"
+              :disabled="stateUser === false"
+              type="text"
+              placeholder="Nome"
+            />
           </div>
           <div class="settings--user__input">
-            <p class="label">E-mail <span class="required">*</span></p>
+            <p class="label">E-mail</p>
+            <p>{{ email }}</p>
           </div>
           <div class="settings--user__input">
-            <p class="label">Senha <span class="required">*</span></p>
+            <p class="label">Senha</p>
+            <p>****</p>
           </div>
         </div>
 
-        <div class="settings--professional">
+        <div v-if="isProfessional === true" class="settings--professional">
           <hr class="" />
+          <button
+            v-if="stateProfessional === false"
+            class="settings--user__state"
+            @click="stateProfessional = true"
+          >
+            Editar
+          </button>
           <p class="settings--subtitle">Dados do profissional</p>
           <div class="settings--professional__input">
             <p class="label">CRM <span class="required">*</span></p>
             <input
               v-model="crm"
               v-mask="'CRM/AA ######'"
+              :disabled="stateProfessional === false"
               type="text"
               placeholder="CRM/RS 123456"
             />
@@ -38,6 +60,7 @@
             <input
               v-model="contact"
               v-mask="'(##) #####-####'"
+              :disabled="stateProfessional === false"
               type="phone"
               placeholder="(00) 00000-0000"
             />
@@ -46,6 +69,7 @@
             <p class="label">Informações adicionais</p>
             <textarea
               v-model="description"
+              :disabled="stateProfessional === false"
               type="text"
               rows="5"
               maxlength="250"
@@ -67,6 +91,7 @@
 
 <script>
 import axios from "axios";
+import Cookie from "js-cookie";
 import Menu from "../components/_base/patterns/menu/Menu";
 import Template from "../components/_base/patterns/template/Template";
 
@@ -80,6 +105,10 @@ export default {
       crm: "",
       description: "",
       contact: "",
+      isProfessional: false,
+      idProfessional: "",
+      stateUser: false,
+      stateProfessional: false,
     };
   },
   components: {
@@ -87,16 +116,44 @@ export default {
     Template,
   },
   created() {
-    this.getDataProfessional();
+    this.getDataUser();
+
+    if (this.isProfessional === true) {
+      this.getDataProfessional();
+    }
   },
   methods: {
-    getDataProfessional() {
-      axios
-        .get("https://api-auxilium.herokuapp.com/professional/")
-        .then((res) => {
-          console.log(res.data);
-        });
+    /** Lista todos os profissionais */
+    getDataUser() {
+      const id = Cookie.get("id");
+
+      axios.get(`https://api-auxilium.herokuapp.com/user/${id}`).then((res) => {
+        const data = res.data.user;
+        this.name = data.name;
+        this.email = data.email;
+        this.isProfessional = data.professional;
+      });
     },
+
+    /** Lista todos os profissionais */
+    getDataProfessional() {
+      // const token = Cookie.get("aux_token");
+      // const id = Cookie.get("id");
+      // const config = {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // };
+      // axios
+      //   .get("https://api-auxilium.herokuapp.com/professional/", config)
+      //   .then((res) => {
+      //     console.log(res.data.professional);
+      //     res.data.professional.forEach((data) => {
+      //       if (data.user._id === id) {
+      //         this.crm = data.professional
+      //       }
+      //     });
+      //   });
+    },
+
     /**
      * Método de atualização de dados do usuário
      * @param {String} name Nome do usuário
@@ -132,11 +189,29 @@ export default {
      * @return Response
      */
     updateProfessionalData() {
-      axios.post("https://api-auxilium.herokuapp.com/professional", {
-        crm: this.crm,
-        contact: this.contact,
-        description: this.description,
-      });
+      const token = Cookie.get("aux_token");
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      if (this.idProfessional === "") {
+        axios.post("https://api-auxilium.herokuapp.com/professional", config, {
+          crm: this.crm,
+          contact: this.contact,
+          description: this.description,
+        });
+      } else {
+        axios.put(
+          `https://api-auxilium.herokuapp.com/professional/${this.idProfessional}`,
+          config,
+          {
+            crm: this.crm,
+            contact: this.contact,
+            description: this.description,
+          }
+        );
+      }
     },
   },
 };
@@ -156,6 +231,14 @@ export default {
     width: 700px;
     margin-left: auto;
     margin-right: auto;
+
+    &__state {
+      float: right;
+      border: none;
+      color: #008eaa;
+      font-weight: bold;
+      font-size: 18px;
+    }
 
     &__input {
       margin-bottom: 15px;

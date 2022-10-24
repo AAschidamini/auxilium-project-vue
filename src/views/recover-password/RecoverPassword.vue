@@ -32,15 +32,15 @@
         <div v-else class="recover--container-form">
           <div class="recover--container-form_input">
             <p class="label">Insira o código de autenticação:</p>
-            <input
-              v-model="token"
-              type="text"
-              placeholder="Ex: 1lskmlk3hk4jh1"
-            />
+            <input v-model="token" type="text" placeholder="Ex: 1lskml" />
           </div>
           <form class="recover--container-form_input">
             <p class="label">Escolha uma nova senha:</p>
-            <input v-model="password" type="password" placeholder="****" />
+            <input
+              v-model="newPassword"
+              type="password"
+              placeholder="*******"
+            />
           </form>
           <div class="recover--container-form_send">
             <button
@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     disabledSave() {
-      if (this.token === "" || this.password === "") {
+      if (this.token === "" || this.newPassword === "") {
         return true;
       } else {
         return false;
@@ -94,7 +94,7 @@ export default {
         .then((res) => {
           if (res) {
             console.log("Token enviado para seu email!");
-            this.$router.push({ name: "Login" });
+            this.emailValidate = true;
           }
         });
     },
@@ -109,6 +109,7 @@ export default {
     resetPassword() {
       axios
         .post("https://api-auxilium.herokuapp.com/user/reset_password", {
+          email: this.email,
           token: this.token,
           password: this.newPassword,
         })
@@ -189,12 +190,13 @@ export default {
       }
 
       &_send {
+        width: 200px;
         margin: 60px auto 20px auto;
         margin-left: auto;
         margin-right: auto;
-        width: 100%;
 
         button {
+          width: 100%;
           padding: 20px 5px;
           font-size: 14px;
           border: none;
@@ -202,7 +204,6 @@ export default {
           color: white;
           border-radius: 0px;
           font-weight: 600;
-          width: 200px;
 
           &:hover {
             background: #008eaa;

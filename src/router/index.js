@@ -8,6 +8,7 @@ import Register from "../views/register/Register";
 import RecoverPassword from "../views/recover-password/RecoverPassword";
 import ProfessionalList from "../views/ProfessionalList";
 import Settings from "../views/Settings";
+import Public from "../views/chats/Public";
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,12 @@ const routes = [
     beforeEnter: Guard.auth,
   },
   {
+    path: "/public-chat",
+    name: "Public Chat",
+    component: Public,
+    beforeEnter: Guard.auth,
+  },
+  {
     path: "/about",
     name: "About the Project",
     component: AboutProject,
@@ -43,11 +50,13 @@ const routes = [
     path: "/professional-list",
     name: "Professional List",
     component: ProfessionalList,
+    beforeEnter: Guard.auth,
   },
   {
     path: "/settings",
     name: "Dados do usuário",
     component: Settings,
+    beforeEnter: Guard.auth,
   },
 ];
 
