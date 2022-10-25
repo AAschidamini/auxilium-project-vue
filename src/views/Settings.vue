@@ -73,16 +73,18 @@
               type="text"
               rows="5"
               maxlength="250"
-              placeholder="Área de especialização, forma de atendimento, etc.."
             />
-            <p style="text-align: right; font-size: 12px">
+            <p
+              v-if="stateProfessional === true"
+              style="text-align: right; font-size: 12px"
+            >
               {{ description.length }} / 250 caracteres
             </p>
           </div>
         </div>
 
         <div class="settings--save">
-          <button div="submit" @click="actionRegister()">SALVAR</button>
+          <button div="submit" @click="actionSave()">SALVAR</button>
         </div>
       </template>
     </Template>
@@ -105,8 +107,10 @@ export default {
       crm: "",
       description: "",
       contact: "",
-      isProfessional: false,
+      isProfessional: null,
       idProfessional: "",
+
+      /** Status */
       stateUser: false,
       stateProfessional: false,
     };
@@ -115,13 +119,11 @@ export default {
     Menu,
     Template,
   },
+
   created() {
     this.getDataUser();
-
-    if (this.isProfessional === true) {
-      this.getDataProfessional();
-    }
   },
+
   methods: {
     /** Lista todos os profissionais */
     getDataUser() {
@@ -132,26 +134,44 @@ export default {
         this.name = data.name;
         this.email = data.email;
         this.isProfessional = data.professional;
+
+        if (this.isProfessional) {
+          this.getDataProfessional();
+        }
       });
     },
 
     /** Lista todos os profissionais */
     getDataProfessional() {
-      // const token = Cookie.get("aux_token");
-      // const id = Cookie.get("id");
-      // const config = {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // };
-      // axios
-      //   .get("https://api-auxilium.herokuapp.com/professional/", config)
-      //   .then((res) => {
-      //     console.log(res.data.professional);
-      //     res.data.professional.forEach((data) => {
-      //       if (data.user._id === id) {
-      //         this.crm = data.professional
-      //       }
-      //     });
-      //   });
+      const token = Cookie.get("aux_token");
+      const id = Cookie.get("id");
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      axios
+        .get("https://api-auxilium.herokuapp.com/professional/", config)
+        .then((res) => {
+          console.log("1", res.data.professional);
+          res.data.professional.forEach((data) => {
+            if (data.user._id === id) {
+              this.crm = data.crm;
+              this.contact = data.contact;
+              this.description = data.description;
+            }
+          });
+        });
+    },
+
+    actionSave() {
+      if (this.stateUser === true) {
+        this.updateUserData();
+      } else if (this.stateProfessional) {
+        this.updateProfessionalData();
+      } else if (this.stateUser === true && this.stateProfessional === true) {
+        this.updateUserData();
+        this.updateProfessionalData();
+      }
     },
 
     /**
@@ -195,12 +215,18 @@ export default {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      if (this.idProfessional === "") {
-        axios.post("https://api-auxilium.herokuapp.com/professional", config, {
-          crm: this.crm,
-          contact: this.contact,
-          description: this.description,
-        });
+      if (this.crm === "") {
+        axios.post(
+          "https://api-auxilium.herokuapp.com/professional",
+          {
+            crm: this.crm,
+            contact: this.contact,
+            description: this.description,
+
+            headers: { Authorization: `Bearer ${token}` },
+          },
+          config
+        );
       } else {
         axios.put(
           `https://api-auxilium.herokuapp.com/professional/${this.idProfessional}`,
