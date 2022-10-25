@@ -1,7 +1,6 @@
 <template>
   <div class="about">
-    <Menu />
-    <Template title="Sobre o projeto">
+    <Layout title="Sobre o projeto">
       <template #content>
         <div class="about--text">
           <p>
@@ -41,18 +40,17 @@
           </p>
         </div>
       </template>
-    </Template>
+    </Layout>
   </div>
 </template>
 
 <script>
-import Menu from "../components/_base/patterns/menu/Menu";
-import Template from "../components/_base/patterns/template/Template";
+import Layout from "../components/_base/patterns/template/Layout";
+
 export default {
   name: "AboutProject",
   components: {
-    Menu,
-    Template,
+    Layout,
   },
 };
 </script>

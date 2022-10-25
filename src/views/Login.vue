@@ -1,41 +1,51 @@
 <template>
-  <div class="login">
-    <div class="login--container">
-      <b-col class="login--container-form" col xs="12" sm="12">
-        <div class="login--container-form_logo">
-          <img src="../assets/logos/auxilium-logo-default.png" alt="Auxilium" />
-        </div>
+  <LayoutOff>
+    <template>
+      <div class="login">
+        <div class="login--container">
+          <b-col class="login--container-form" col xs="12" sm="12">
+            <div class="login--container-form_logo">
+              <img
+                src="../assets/logos/auxilium-logo-default.png"
+                alt="Auxilium"
+              />
+            </div>
 
-        <div class="login--container-form_input">
-          <input v-model="email" type="email" placeholder="LOGIN" />
-        </div>
+            <div class="login--container-form_input">
+              <input v-model="email" type="email" placeholder="LOGIN" />
+            </div>
 
-        <div class="login--container-form_input">
-          <input v-model="password" type="password" placeholder="SENHA" />
-          <router-link :to="{ name: 'Recover Password' }"
-            >Esqueci minha senha</router-link
-          >
+            <div class="login--container-form_input">
+              <input v-model="password" type="password" placeholder="SENHA" />
+              <router-link :to="{ name: 'Recover Password' }"
+                >Esqueci minha senha</router-link
+              >
+            </div>
+          </b-col>
+          <div class="login--container-form_send">
+            <button class="submit" type="submit" @click="actionLogin()">
+              ENTRAR
+            </button>
+            <button class="submit" @click="$router.push({ name: 'Register' })">
+              CADASTRAR-SE
+            </button>
+          </div>
         </div>
-      </b-col>
-      <div class="login--container-form_send">
-        <button class="submit" type="submit" @click="actionLogin()">
-          ENTRAR
-        </button>
-        <button class="submit" @click="$router.push({ name: 'Register' })">
-          CADASTRAR-SE
-        </button>
       </div>
-    </div>
-  </div>
+    </template>
+  </LayoutOff>
 </template>
 
 <script>
 import axios from "axios";
 import Cookie from "js-cookie";
+import LayoutOff from "../components/_base/patterns/template/LayoutOff";
 
 export default {
   name: "Login",
-  components: {},
+  components: {
+    LayoutOff,
+  },
   data() {
     return {
       email: "",
@@ -69,7 +79,12 @@ export default {
           Cookie.set("user", res.data.user.email);
           Cookie.set("id", res.data.user._id);
 
-          this.$router.push({ path: "/about" });
+          this.$router.push({ path: "/home" });
+        })
+        .catch((err) => {
+          this.$bus.$emit("show-alert-chip", {
+            message: err.response.data.error,
+          });
         });
     },
   },
@@ -77,23 +92,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .login {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  height: auto;
-  font-family: sans-serif;
-  background-image: linear-gradient(to bottom, #008eaa, #73cef4, #fff);
-  background-repeat: no-repeat;
-  background-size: 100% 20em;
-
   &--container {
-    width: 700px;
-    padding: 30px 30px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 60px;
-    background-color: #f3f3f3;
-
     &-form {
       width: 300px;
       margin: 20px auto;

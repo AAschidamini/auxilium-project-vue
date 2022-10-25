@@ -1,16 +1,13 @@
 <template>
-  <div class="home">
-    <Menu />
-    HOME
-  </div>
+  <Layout title="Home"></Layout>
 </template>
 
 <script>
-import Menu from "../components/_base/patterns/menu/Menu";
+import Layout from "../components/_base/patterns/template/Layout";
 export default {
   name: "Home",
   components: {
-    Menu,
+    Layout,
   },
 };
 </script>

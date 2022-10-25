@@ -1,7 +1,6 @@
 <template>
   <div class="settings">
-    <Menu />
-    <Template title="Dados do usuário">
+    <Layout title="Dados do usuário">
       <template #content>
         <div class="settings--user">
           <p class="settings--description">
@@ -9,6 +8,7 @@
             troca de senha, será necessário efetuar logoff e ir em "Esqueci
             minha senha".
           </p>
+
           <button
             v-if="stateUser === false"
             class="settings--user__state"
@@ -84,21 +84,29 @@
         </div>
 
         <div class="settings--save">
-          <button div="submit" @click="actionSave()">SALVAR</button>
+          <button div="submit" @click="updateUserData()">SALVAR</button>
+        </div>
+
+        <div class="settings--delete">
+          <button @click="deleteUser()">Excluir usuário</button>
         </div>
       </template>
-    </Template>
+    </Layout>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Cookie from "js-cookie";
-import Menu from "../components/_base/patterns/menu/Menu";
-import Template from "../components/_base/patterns/template/Template";
+import Layout from "../components/_base/patterns/template/Layout";
 
 export default {
   name: "Settings",
+
+  components: {
+    Layout,
+  },
+
   data() {
     return {
       /** Dados do formulário */
@@ -107,17 +115,12 @@ export default {
       crm: "",
       description: "",
       contact: "",
-      isProfessional: null,
-      idProfessional: "",
+      isProfessional: false,
 
-      /** Status */
+      /** Status botões editar */
       stateUser: false,
       stateProfessional: false,
     };
-  },
-  components: {
-    Menu,
-    Template,
   },
 
   created() {
@@ -136,108 +139,54 @@ export default {
         this.isProfessional = data.professional;
 
         if (this.isProfessional) {
-          this.getDataProfessional();
+          this.crm = data.crm;
+          this.contact = data.contact;
+          this.description = data.description;
         }
       });
     },
 
-    /** Lista todos os profissionais */
-    getDataProfessional() {
-      const token = Cookie.get("aux_token");
-      const id = Cookie.get("id");
-
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-      axios
-        .get("https://api-auxilium.herokuapp.com/professional/", config)
-        .then((res) => {
-          console.log("1", res.data.professional);
-          res.data.professional.forEach((data) => {
-            if (data.user._id === id) {
-              this.crm = data.crm;
-              this.contact = data.contact;
-              this.description = data.description;
-            }
-          });
-        });
-    },
-
-    actionSave() {
-      if (this.stateUser === true) {
-        this.updateUserData();
-      } else if (this.stateProfessional) {
-        this.updateProfessionalData();
-      } else if (this.stateUser === true && this.stateProfessional === true) {
-        this.updateUserData();
-        this.updateProfessionalData();
-      }
-    },
-
     /**
      * Método de atualização de dados do usuário
-     * @param {String} name Nome do usuário
-     * @param {String} email Email do usuário
-     * @param {String} password Senha do usuário
-     * @param {Boolean} type se o usuário é profissional ou não
-     *
-     * @return Response
      */
     updateUserData() {
+      const id = Cookie.get("id");
+
+      const data = {
+        name: this.name,
+        crm: this.crm,
+        contact: this.contact,
+        description: this.description,
+      };
+
       axios
-        .put("https://api-auxilium.herokuapp.com/user/register", {
-          name: this.name,
-        })
+        .put(`https://api-auxilium.herokuapp.com/user/${id}`, data)
         .then((res) => {
           if (res) {
-            this.showSucessAlert = true;
+            this.$bus.$emit("show-alert-chip", {
+              message: "Usuário editado com sucesso.",
+            });
 
-            this.$router.push({ name: "Login" });
+            this.stateProfessional = false;
+            this.stateUser = false;
           }
-        })
-        .catch(() => {
-          this.showErrorAlert = true;
         });
     },
 
-    /**
-     * Método que registra ou atualiza os dados profissionais
-     * @param {Number} crm CRM médico para atuar
-     * @param {String} description Descrição adicional
-     * @param {String} contact Contato do profissional
-     *
-     * @return Response
-     */
-    updateProfessionalData() {
-      const token = Cookie.get("aux_token");
+    /** Excluir conta */
+    deleteUser() {
+      const id = Cookie.get("id");
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      axios.delete(`https://api-auxilium.herokuapp.com/user/${id}`).then(() => {
+        this.$bus.$emit("show-alert-chip", {
+          message: "O usuário foi deletado com sucesso.",
+        });
 
-      if (this.crm === "") {
-        axios.post(
-          "https://api-auxilium.herokuapp.com/professional",
-          {
-            crm: this.crm,
-            contact: this.contact,
-            description: this.description,
-
-            headers: { Authorization: `Bearer ${token}` },
-          },
-          config
-        );
-      } else {
-        axios.put(
-          `https://api-auxilium.herokuapp.com/professional/${this.idProfessional}`,
-          config,
-          {
-            crm: this.crm,
-            contact: this.contact,
-            description: this.description,
-          }
-        );
-      }
+        Cookie.remove("aux_token");
+        Cookie.remove("user");
+        Cookie.remove("id");
+        this.$router.push({ name: "Login" });
+      });
     },
   },
 };
@@ -323,6 +272,23 @@ export default {
         border: none;
         border-radius: 0;
         resize: none;
+      }
+    }
+  }
+
+  &--delete {
+    text-align: right;
+    margin-top: 50px;
+
+    button {
+      padding: 5px 10px;
+      font-weight: bold;
+      background: none;
+      border: 2px solid #f20000;
+      color: #f20000;
+
+      &:hover {
+        opacity: 0.8;
       }
     }
   }

@@ -1,73 +1,124 @@
 <template>
-  <div class="register">
-    <div class="register--container">
-      <p class="register--container_return">
-        <router-link :to="{ name: 'Login' }">Já possuo login</router-link>
-      </p>
-      <div class="register--container-form">
-        <h1 class="register--container_title">Cadastre sua conta</h1>
-        <p class="register--container_description">
-          Preencha todos os campos obrigatórios para completar o registro.
+  <LayoutOff>
+    <template>
+      <div class="register">
+        <p class="register--container_return">
+          <router-link :to="{ name: 'Login' }">Já possuo login</router-link>
         </p>
-        <div class="register--container-form_input">
-          <p class="label">Nome <span class="required">*</span></p>
-          <input v-model="name" type="text" placeholder="Nome" required />
-        </div>
-        <div class="register--container-form_input">
-          <p class="label">E-mail <span class="required">*</span></p>
-          <input
-            v-model="email"
-            type="email"
-            placeholder="exemplo@exemplo.com"
-            required
-          />
-        </div>
-        <div class="register--container-form_input">
-          <p class="label">Senha <span class="required">*</span></p>
-          <input
-            v-model="password"
-            type="password"
-            placeholder="Exemplo@123"
-            required
-          />
-        </div>
 
-        <div class="register--container-form_input checkbox">
-          <p class="checkbox-label">
-            É um profissional e deseja se voluntariar?
+        <div class="register-form">
+          <h1 class="register_title">Cadastre sua conta</h1>
+          <p class="register_description">
+            Preencha todos os campos obrigatórios para completar o registro.
           </p>
-          <input
-            v-model="professional"
-            type="checkbox"
-            class="checkbox-input"
-          />
-        </div>
+          <div>
+            <div class="register-form_input">
+              <p class="label">Nome <span class="required">*</span></p>
+              <input v-model="name" type="text" placeholder="Nome" required />
+            </div>
+            <div class="register-form_input">
+              <p class="label">E-mail <span class="required">*</span></p>
+              <input
+                v-model="email"
+                type="email"
+                placeholder="exemplo@exemplo.com"
+                required
+              />
+            </div>
+            <div class="register-form_input">
+              <p class="label">Senha <span class="required">*</span></p>
+              <input
+                v-model="password"
+                type="password"
+                placeholder="Exemplo@123"
+                required
+              />
+            </div>
 
-        <div class="register--container-form_send">
-          <button
-            :disabled="disabledSave"
-            class="submit"
-            type="submit"
-            @click="newUser"
-          >
-            CADASTRAR
-          </button>
+            <div class="register-form_input checkbox">
+              <p class="checkbox-label">
+                É um profissional e deseja se voluntariar?
+              </p>
+              <input
+                v-model="professional"
+                type="checkbox"
+                class="checkbox-input"
+              />
+            </div>
+          </div>
+
+          <div v-if="professional === true">
+            <hr class="" />
+            <p class="register--subtitle">Dados do profissional</p>
+            <div class="register-form_input">
+              <p class="label">CRM <span class="required">*</span></p>
+              <input
+                v-model="crm"
+                v-mask="'CRM/AA ######'"
+                type="text"
+                placeholder="CRM/RS 123456"
+              />
+            </div>
+            <div class="register-form_input">
+              <p class="label">Contato</p>
+              <input
+                v-model="contact"
+                v-mask="'(##) #####-####'"
+                type="phone"
+                placeholder="(00) 00000-0000"
+              />
+            </div>
+            <div class="register-form_input">
+              <p class="label">Informações adicionais</p>
+              <textarea
+                v-model="description"
+                type="text"
+                rows="5"
+                maxlength="250"
+              />
+              <p style="text-align: right; font-size: 12px">
+                {{ description.length }} / 250 caracteres
+              </p>
+            </div>
+          </div>
+
+          <div class="register-form_send">
+            <button
+              :disabled="disabledSave"
+              class="submit"
+              type="submit"
+              @click="newUser"
+            >
+              CADASTRAR
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </LayoutOff>
 </template>
 <script>
 import axios from "axios";
+import LayoutOff from "../../components/_base/patterns/template/LayoutOff";
 
 export default {
   name: "Register",
+
+  components: {
+    LayoutOff,
+  },
+
   data() {
     return {
       name: "",
       email: "",
       password: "",
       professional: false,
+
+      /** Dados do profissional se houver */
+      crm: "",
+      description: "",
+      contact: "",
     };
   },
   computed: {
@@ -96,10 +147,15 @@ export default {
           email: this.email,
           password: this.password,
           professional: this.professional,
+          crm: this.crm,
+          description: this.description,
+          contact: this.contact,
         })
         .then((res) => {
           if (res) {
-            console.log("Usuário registrado");
+            this.$bus.$emit("show-alert-chip", {
+              message: "Cadastro realizado com sucesso!",
+            });
             this.$router.push({ name: "Login" });
           }
         });
@@ -109,102 +165,97 @@ export default {
 </script>
 <style lang="scss" scoped>
 .register {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  height: auto;
-  font-family: sans-serif;
-  background-image: linear-gradient(to bottom, #008eaa, #73cef4, #fff);
-  background-repeat: no-repeat;
-  background-size: 100% 20em;
-  text-align: center;
+  &_return {
+    font-size: 16px;
+    text-align: left;
+    a {
+      text-decoration: none;
+      color: #008eaa;
 
-  &--container {
-    width: 700px;
-    padding: 30px 30px;
+      &:hover {
+        color: #3f3e9a;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &_description {
+    font-size: 12px;
+  }
+
+  &--subtitle {
+    margin: 10px 0 30px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  &-form {
+    width: 400px;
+    margin: 20px auto;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 60px;
-    background-color: #f3f3f3;
 
-    &_return {
-      font-size: 16px;
-      text-align: left;
-      a {
-        text-decoration: none;
-        color: #008eaa;
+    &_input {
+      margin-bottom: 15px;
 
-        &:hover {
-          color: #3f3e9a;
-          text-decoration: underline;
-        }
+      .label {
+        font-size: 16px;
+        float: left;
+      }
+
+      .required {
+        color: red;
+      }
+
+      input {
+        padding: 15px 10px;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+      }
+      input::placeholder {
+        font-size: 14px;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 0;
+        resize: none;
+      }
+    }
+    .checkbox {
+      display: flex;
+
+      &-input {
+        width: 20px !important;
+        margin: 10px 20px;
+      }
+      &-label {
+        text-align: right;
+        padding: 20px 0 0px 0;
       }
     }
 
-    &_description {
-      font-size: 12px;
-    }
-
-    &-form {
-      width: 400px;
-      margin: 20px auto;
+    &_send {
+      margin: 60px auto 20px auto;
       margin-left: auto;
       margin-right: auto;
+      width: 200px;
 
-      &_input {
-        margin-bottom: 15px;
+      button {
+        padding: 20px 5px;
+        font-size: 14px;
+        border: none;
+        background-color: #3f3e9a;
+        color: white;
+        border-radius: 0px;
+        font-weight: 600;
+        width: 200px;
 
-        .label {
-          font-size: 16px;
-          float: left;
-        }
-
-        .required {
-          color: red;
-        }
-
-        input {
-          padding: 15px 10px;
-          width: 100%;
-          border: none;
-          border-radius: 0;
-        }
-        input::placeholder {
-          font-size: 14px;
-        }
-      }
-      .checkbox {
-        display: flex;
-
-        &-input {
-          width: 20px !important;
-          margin: 10px 20px;
-        }
-        &-label {
-          text-align: right;
-          padding: 20px 0 0px 0;
-        }
-      }
-
-      &_send {
-        margin: 60px auto 20px auto;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-
-        button {
-          padding: 20px 5px;
-          font-size: 14px;
-          border: none;
-          background-color: #3f3e9a;
-          color: white;
-          border-radius: 0px;
-          font-weight: 600;
-          width: 200px;
-
-          &:hover {
-            background: #008eaa;
-          }
+        &:hover {
+          background: #008eaa;
         }
       }
     }
