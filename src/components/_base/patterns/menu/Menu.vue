@@ -1,34 +1,28 @@
 <template>
   <div class="menu">
     <div class="menu--left">
-      <div class="menu--left__logo">
+      <router-link :to="{ name: 'About the Project' }" class="menu--left__logo">
         <img src="../../../../assets/logos/aux-logo-ver.png" alt="Auxilium" />
-      </div>
+      </router-link>
 
-      <div class="menu--left__link">
-        <router-link :to="{ name: 'Home' }">Home</router-link>
-      </div>
-      <div class="menu--left__link">
-        <router-link :to="{ name: 'About the Project' }"
-          >Sobre o projeto</router-link
-        >
-      </div>
-      <div class="menu--left__link">
-        <router-link :to="{ name: 'Public Chat' }">Chats</router-link>
-      </div>
-      <div class="menu--left__link">
-        <router-link :to="{ name: 'Professional List' }"
-          >Profissionais</router-link
-        >
-      </div>
+      <router-link :to="{ name: 'About the Project' }" class="menu--left__link">
+        Sobre o projeto
+      </router-link>
+      <router-link :to="{ name: 'Public Chat' }" class="menu--left__link">
+        Chats
+      </router-link>
+      <router-link :to="{ name: 'Professional List' }" class="menu--left__link">
+        Profissionais
+      </router-link>
     </div>
     <div class="menu--right">
-      <div class="menu--right__logoff">
-        <router-link :to="{ name: 'Dados do usuário' }">
-          <b-icon icon="person-fill"></b-icon>
-          Conta
-        </router-link>
-      </div>
+      <router-link
+        :to="{ name: 'Dados do usuário' }"
+        class="menu--right__logoff"
+      >
+        <b-icon icon="person-fill"></b-icon>
+        Conta
+      </router-link>
       <div class="menu--right__logoff" @click="logoff()">Sair</div>
     </div>
   </div>
@@ -64,7 +58,7 @@ export default {
   &--left {
     display: flex;
     &__logo {
-      padding: 0;
+      padding-top: 5px;
       background: #3f3e9a;
 
       img {
@@ -72,14 +66,12 @@ export default {
       }
     }
     &__link {
-      padding: 15px 50px;
+      padding: 20px 40px 15px 40px;
       cursor: pointer;
-      a {
-        color: white;
-        font-weight: 500;
-        text-decoration: none;
-        margin-top: 10px;
-      }
+
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
 
       &:hover {
         background: #3f3e9a;
@@ -90,15 +82,13 @@ export default {
   &--right {
     display: flex;
     &__logoff {
-      padding: 15px 50px;
+      padding: 20px 40px 15px 40px;
       cursor: pointer;
       float: right;
-      a {
-        color: white;
-        font-weight: 500;
-        text-decoration: none;
-        margin-top: 10px;
-      }
+
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
 
       &:hover {
         background: #3f3e9a;

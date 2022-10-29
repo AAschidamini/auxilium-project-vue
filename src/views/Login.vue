@@ -79,7 +79,7 @@ export default {
           Cookie.set("user", res.data.user.email);
           Cookie.set("id", res.data.user._id);
 
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: "/about" });
         })
         .catch((err) => {
           this.$bus.$emit("show-alert-chip", {

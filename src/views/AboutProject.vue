@@ -4,7 +4,7 @@
       <template #content>
         <div class="about--text">
           <p>
-            A Auxilium é uma plataforma totalmente gratuíta, voltada para ajudar
+            Auxilium é uma plataforma totalmente gratuíta, voltada para ajudar
             pessoas que estão sofrendo com crises de ansiedade e/ou depressão.
           </p>
         </div>

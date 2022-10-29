@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Guard from "../services/middlewares.js";
-import Home from "../views/Home";
 import AboutProject from "../views/AboutProject";
 import Login from "../views/Login";
 import Register from "../views/register/Register";
@@ -27,12 +26,6 @@ const routes = [
     path: "/recover-password",
     name: "Recover Password",
     component: RecoverPassword,
-  },
-  {
-    path: "/home",
-    name: "Home",
-    component: Home,
-    beforeEnter: Guard.auth,
   },
   {
     path: "/public-chat",
