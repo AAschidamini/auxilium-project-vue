@@ -97,12 +97,15 @@ export default {
      * @return Response
      */
     sendToken() {
+      this.$loading(true);
+
       axios
         .post("https://api-auxilium.herokuapp.com/user/forgot_password", {
           email: this.email,
         })
         .then((res) => {
           if (res) {
+            this.$loading(false);
             this.$bus.$emit("show-alert-chip", {
               message: "Código enviado para seu email!",
             });
@@ -119,6 +122,8 @@ export default {
      * @return Response
      */
     resetPassword() {
+      this.$loading(true);
+
       axios
         .post("https://api-auxilium.herokuapp.com/user/reset_password", {
           email: this.email,
@@ -127,6 +132,8 @@ export default {
         })
         .then((res) => {
           if (res) {
+            this.$loading(false);
+
             this.$bus.$emit("show-alert-chip", {
               message: "Senha alterada com sucesso!",
             });

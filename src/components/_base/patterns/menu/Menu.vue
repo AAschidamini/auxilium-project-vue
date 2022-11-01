@@ -58,7 +58,6 @@ export default {
   &--left {
     display: flex;
     &__logo {
-      padding-top: 5px;
       background: #3f3e9a;
 
       img {
@@ -66,7 +65,7 @@ export default {
       }
     }
     &__link {
-      padding: 20px 40px 15px 40px;
+      padding: 15px 40px;
       cursor: pointer;
 
       color: white;
@@ -83,7 +82,7 @@ export default {
   &--right {
     display: flex;
     &__logoff {
-      padding: 20px 40px 15px 40px;
+      padding: 15px 40px;
       cursor: pointer;
       float: right;
 

@@ -104,6 +104,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     background: #ececec;
+    margin-bottom: 80px;
   }
   &--title {
     margin-left: auto;
@@ -113,7 +114,6 @@ export default {
     width: 70%;
     h1 {
       font-weight: bold;
-      text-decoration: underline;
     }
   }
 }

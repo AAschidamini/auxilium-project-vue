@@ -16,6 +16,12 @@ export default {
     ChatPublic,
     Layout,
   },
+
+  created() {
+    this.$loading(true);
+
+    setTimeout(() => this.$loading(false), 10000);
+  },
 };
 </script>
 <style lang="scss" scoped></style>

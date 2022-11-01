@@ -54,7 +54,11 @@ export default {
   methods: {
     /** Lista todos os profissionais */
     getDataUser() {
+      this.$loading(true);
+
       axios.get(`https://api-auxilium.herokuapp.com/user/`).then((res) => {
+        this.$loading(false);
+
         const data = res.data.user;
 
         data.forEach((item) => {

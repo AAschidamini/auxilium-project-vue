@@ -141,6 +141,8 @@ export default {
      * @return Response
      */
     newUser() {
+      this.$loading(true);
+
       axios
         .post("https://api-auxilium.herokuapp.com/user/register", {
           name: this.name,
@@ -153,6 +155,8 @@ export default {
         })
         .then((res) => {
           if (res) {
+            this.$loading(false);
+
             this.$bus.$emit("show-alert-chip", {
               message: "Cadastro realizado com sucesso!",
             });
@@ -253,6 +257,7 @@ export default {
         border-radius: 0px;
         font-weight: 600;
         width: 200px;
+        transition: 0.3s;
 
         &:hover {
           background: #008eaa;

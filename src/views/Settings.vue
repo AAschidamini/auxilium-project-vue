@@ -130,9 +130,13 @@ export default {
   methods: {
     /** Lista todos os profissionais */
     getDataUser() {
+      this.$loading(true);
+
       const id = Cookie.get("id");
 
       axios.get(`https://api-auxilium.herokuapp.com/user/${id}`).then((res) => {
+        this.$loading(false);
+
         const data = res.data.user;
         this.name = data.name;
         this.email = data.email;
@@ -150,6 +154,8 @@ export default {
      * Método de atualização de dados do usuário
      */
     updateUserData() {
+      this.$loading(true);
+
       const id = Cookie.get("id");
 
       const data = {
@@ -163,6 +169,8 @@ export default {
         .put(`https://api-auxilium.herokuapp.com/user/${id}`, data)
         .then((res) => {
           if (res) {
+            this.$loading(false);
+
             this.$bus.$emit("show-alert-chip", {
               message: "Usuário editado com sucesso.",
             });
@@ -175,9 +183,13 @@ export default {
 
     /** Excluir conta */
     deleteUser() {
+      this.$loading(true);
+
       const id = Cookie.get("id");
 
       axios.delete(`https://api-auxilium.herokuapp.com/user/${id}`).then(() => {
+        this.$loading(false);
+
         this.$bus.$emit("show-alert-chip", {
           message: "O usuário foi deletado com sucesso.",
         });
@@ -217,8 +229,11 @@ export default {
 
     &__input {
       margin-bottom: 15px;
+      margin-top: 10px;
 
       .label {
+        margin-top: 10px;
+        margin-bottom: 0;
         font-size: 16px;
         text-align: left;
       }
@@ -248,6 +263,8 @@ export default {
       margin-bottom: 15px;
 
       .label {
+        margin-top: 10px;
+        margin-bottom: 0;
         font-size: 16px;
         text-align: left;
       }

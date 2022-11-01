@@ -12,11 +12,21 @@
             </div>
 
             <div class="login--container-form_input">
-              <input v-model="email" type="email" placeholder="LOGIN" />
+              <input
+                v-model="email"
+                v-on:keyup.enter="actionLogin()"
+                type="email"
+                placeholder="LOGIN"
+              />
             </div>
 
             <div class="login--container-form_input">
-              <input v-model="password" type="password" placeholder="SENHA" />
+              <input
+                v-model="password"
+                v-on:keyup.enter="actionLogin()"
+                type="password"
+                placeholder="SENHA"
+              />
               <router-link :to="{ name: 'Recover Password' }"
                 >Esqueci minha senha</router-link
               >
@@ -59,7 +69,11 @@ export default {
      * @param {String} password
      */
     actionLogin() {
+      this.$loading(true);
+
+      Cookie.set("id");
       Cookie.remove("aux_token");
+      Cookie.set("type_user");
 
       axios
         .post(
@@ -75,6 +89,7 @@ export default {
           }
         )
         .then((res) => {
+          this.$loading(false);
           Cookie.set("aux_token", res.data.token);
           Cookie.set("type_user", res.data.user.professional);
           Cookie.set("id", res.data.user._id);
@@ -82,6 +97,7 @@ export default {
           this.$router.push({ path: "/about" });
         })
         .catch((err) => {
+          this.$loading(false);
           this.$bus.$emit("show-alert-chip", {
             message: err.response.data.error,
           });

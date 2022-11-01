@@ -2,12 +2,13 @@
   <Layout title="Chats">
     <template #content>
       <div class="chats">
-        <p class="chat-pvt" @click.stop="actionOpenChatPvt()">
+        <p class="chat-pvt" @click="actionOpenChatPvt()">
           Chat com profissional
         </p>
-        <br />
 
-        <p class="chat-pbl" @click.stop="openChatPbl()">Chat público</p>
+        <div v-if="professional === 'false'" class="mt-4">
+          <p class="chat-pbl" @click="openChatPbl()">Chat público</p>
+        </div>
       </div>
     </template>
   </Layout>
@@ -28,7 +29,7 @@ export default {
 
   data() {
     return {
-      professional: false,
+      professional: "",
     };
   },
 
@@ -38,7 +39,9 @@ export default {
 
   methods: {
     actionOpenChatPvt() {
-      if (!this.professional) {
+      this.$loading(true);
+
+      if (this.professional === "false") {
         const id = Cookie.get("id");
         const status = {
           statusChat: true,
@@ -48,12 +51,14 @@ export default {
           .put(`https://api-auxilium.herokuapp.com/user/chat/${id}`, status)
           .then((res) => {
             if (res) {
+              this.$loading(false);
               this.$router.push({
                 path: `/professional-chat`,
               });
             }
           });
       } else {
+        this.$loading(false);
         this.$router.push({
           path: `/professional-chat`,
         });

@@ -4,12 +4,12 @@
       <div class="pvt">
         <!-- SAIR DO CHAT -->
 
-        <div v-if="professional" class="pvt--return">
+        <div v-if="professional === 'true'" class="pvt--return">
           <router-link :to="{ name: 'Chats' }">Voltar</router-link>
         </div>
 
         <!-- DADOS PARA O PROFISSIONAL CONECTAR -->
-        <div v-if="professional" class="pvt--info-professional">
+        <div v-if="professional === 'true'" class="pvt--info-professional">
           <p class="pvt--info-professional-title">
             Escolha um usuário para realizar o atendimento.
           </p>
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div v-if="!professional" class="pvt--finish">
+        <div v-if="professional === 'false'" class="pvt--finish">
           <p @click="removeStatusOnline()">Finalizar atendimento</p>
         </div>
 
@@ -89,17 +89,24 @@ export default {
   },
 
   created() {
+    this.$loading(true);
     this.professional = Cookie.get("type_user");
+
     this.id = Cookie.get("id");
 
-    if (this.professional === true) {
+    if (this.professional === "true") {
       this.getUsersOnline();
     }
+
+    setTimeout(() => this.$loading(false), 10000);
   },
 
   methods: {
     getUsersOnline() {
+      this.$loading(true);
+
       axios.get("https://api-auxilium.herokuapp.com/user/").then((res) => {
+        this.$loading(false);
         const item = res.user;
 
         item.forEach((user) => {
@@ -114,6 +121,8 @@ export default {
     },
 
     removeStatusOnline() {
+      this.$loading(false);
+
       const id = Cookie.get("id");
 
       const status = {
@@ -124,6 +133,8 @@ export default {
         .put(`https://api-auxilium.herokuapp.com/user/chat/${id}`, status)
         .then((res) => {
           if (res) {
+            this.$loading(false);
+
             this.$bus.$emit("show-alert-chip", {
               message: "Atendimento finalizado!",
             });
