@@ -8,7 +8,7 @@
       <router-link :to="{ name: 'About the Project' }" class="menu--left__link">
         Sobre o projeto
       </router-link>
-      <router-link :to="{ name: 'Public Chat' }" class="menu--left__link">
+      <router-link :to="{ name: 'Chats' }" class="menu--left__link">
         Chats
       </router-link>
       <router-link :to="{ name: 'Professional List' }" class="menu--left__link">
@@ -72,6 +72,7 @@ export default {
       color: white;
       font-weight: 500;
       text-decoration: none;
+      transition: 0.3s;
 
       &:hover {
         background: #3f3e9a;
@@ -89,6 +90,7 @@ export default {
       color: white;
       font-weight: 500;
       text-decoration: none;
+      transition: 0.3s;
 
       &:hover {
         background: #3f3e9a;

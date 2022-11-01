@@ -76,7 +76,7 @@ export default {
         )
         .then((res) => {
           Cookie.set("aux_token", res.data.token);
-          Cookie.set("user", res.data.user.email);
+          Cookie.set("type_user", res.data.user.professional);
           Cookie.set("id", res.data.user._id);
 
           this.$router.push({ path: "/about" });
