@@ -1,11 +1,10 @@
-const express = require("express");
+var express = require("express");
+var path = require("path");
+var serveStatic = require("serve-static");
 
-const { resolve } = require("path");
+var app = express();
+app.use(serveStatic(path.join(__dirname, "dist")));
 
-const app = express();
-
-app.use(express.static(resolve(__dirname, "./dist")));
-
-app.listen(process.env.PORT || 5000);
-
-console.log("server started", port);
+var port = process.env.PORT || 5000;
+app.listen(port);
+console.log("server started " + port);
