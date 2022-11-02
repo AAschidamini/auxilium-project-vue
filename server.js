@@ -4,10 +4,6 @@ var serveStatic = require("serve-static");
 
 var app = express();
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});
-
 app.use(serveStatic(path.join(__dirname, "dist")));
 
 var port = process.env.PORT || 5000;
