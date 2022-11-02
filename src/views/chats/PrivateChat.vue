@@ -11,7 +11,9 @@
         <!-- DADOS PARA O PROFISSIONAL CONECTAR -->
         <div v-if="professional === 'true'" class="pvt--info-professional">
           <p class="pvt--info-professional-title">
-            Escolha um usuário para realizar o atendimento.
+            Escolha um dos usuários online e insira o código no campo "Código"
+            para realizar o atendimento. No campo nome você insere o seu
+            <u>NOME COMPLETO</u>
           </p>
           <p class="pvt--info-professional-subtitle">Usuários online:</p>
 
@@ -22,8 +24,9 @@
               :key="i"
               class="pvt--info-professional_list-data"
             >
-              <p>Nome do usuário: {{ user.name }}</p>
-              <p>Código da sala: {{ user.cod }}</p>
+              <p>
+                Código da sala: <b>{{ user.cod }}</b>
+              </p>
               <hr />
             </div>
 
@@ -107,13 +110,13 @@ export default {
 
       axios.get("https://api-auxilium.herokuapp.com/user/").then((res) => {
         this.$loading(false);
-        const item = res.user;
 
-        item.forEach((user) => {
-          if (user.professional === false && user.statusChat === true) {
+        const item = res.data.user;
+
+        item.forEach((val) => {
+          if (val.professional === false && val.statusChat === true) {
             this.users.push({
-              name: user.name,
-              cod: user._id,
+              cod: val._id,
             });
           }
         });
