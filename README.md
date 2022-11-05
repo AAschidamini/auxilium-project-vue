@@ -1,24 +1,29 @@
 # auxilium-vue
 
-## Project setup
+## Instalar o projeto
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Rodar o projeto local
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compilar o projeto
+
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### Validar lint
+
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### DEMO
+
+https://auxiliumapp.herokuapp.com/
