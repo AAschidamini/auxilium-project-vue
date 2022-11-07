@@ -1,11 +1,13 @@
-const express = require("express");
-const { resolve } = require("path");
-const app = express();
+var express = require("express");
+var path = require("path");
+var serveStatic = require("serve-static");
 
-app.use("/", express.static(resolve(__dirname, "./build")));
-app.use("*", express.static(resolve(__dirname, "./build")));
+var app = express();
 
-const port = process.env.PORT || 5000;
+app.use("/", serveStatic(path.join(__dirname, "dist")));
+app.use("*", serveStatic(path.join(__dirname, "dist")));
+
+var port = process.env.PORT || 5000;
 
 app.listen(port);
 

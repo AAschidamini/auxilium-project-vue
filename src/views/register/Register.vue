@@ -23,6 +23,7 @@
                 type="email"
                 placeholder="exemplo@exemplo.com"
                 required
+                @blur="validateEmail"
               />
             </div>
             <div class="register-form_input">
@@ -119,6 +120,8 @@ export default {
       crm: "",
       description: "",
       contact: "",
+
+      isValidEmail: false,
     };
   },
   computed: {
@@ -131,6 +134,18 @@ export default {
     },
   },
   methods: {
+    validateEmail() {
+      const reg =
+        // eslint-disable-next-line no-useless-escape
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+
+      if (reg.test(this.email)) {
+        this.isValidEmail = true;
+      } else {
+        this.isValidEmail = false;
+      }
+    },
+
     /**
      * Método de cadastro de usuário paciente
      * @param {String} name Nome do usuário
@@ -143,26 +158,40 @@ export default {
     newUser() {
       this.$loading(true);
 
-      axios
-        .post("https://api-auxilium.herokuapp.com/user/register", {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          professional: this.professional,
-          crm: this.crm,
-          description: this.description,
-          contact: this.contact,
-        })
-        .then((res) => {
-          if (res) {
-            this.$loading(false);
+      if (this.isValidEmail === true) {
+        axios
+          .post("https://api-auxilium.herokuapp.com/user/register", {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            professional: this.professional,
+            crm: this.crm,
+            description: this.description,
+            contact: this.contact,
+          })
+          .then((res) => {
+            if (res) {
+              this.$loading(false);
 
+              this.$bus.$emit("show-alert-chip", {
+                message: "Cadastro realizado com sucesso!",
+              });
+              this.$router.push({ name: "Login" });
+            }
+          })
+          .catch((err) => {
+            this.$loading(false);
             this.$bus.$emit("show-alert-chip", {
-              message: "Cadastro realizado com sucesso!",
+              message: `${err}`,
             });
-            this.$router.push({ name: "Login" });
-          }
+          });
+      } else {
+        this.$loading(false);
+
+        this.$bus.$emit("show-alert-chip", {
+          message: "Preencha um e-mail válido!",
         });
+      }
     },
   },
 };

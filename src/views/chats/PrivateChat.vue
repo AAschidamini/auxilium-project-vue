@@ -25,7 +25,7 @@
               class="pvt--info-professional_list-data"
             >
               <p>
-                Código da sala: <b>{{ user.cod }}</b>
+                Código da sala: <b>{{ user.id }}</b>
               </p>
               <hr />
             </div>
@@ -108,15 +108,17 @@ export default {
     getUsersOnline() {
       this.$loading(true);
 
+      this.users = [];
+
       axios.get("https://api-auxilium.herokuapp.com/user/").then((res) => {
         this.$loading(false);
 
         const item = res.data.user;
 
         item.forEach((val) => {
-          if (val.professional === false && val.statusChat === true) {
+          if (val.statusChat === true) {
             this.users.push({
-              cod: val._id,
+              id: val._id,
             });
           }
         });
@@ -192,6 +194,7 @@ export default {
       background: white;
       height: 200px;
       padding: 10px;
+      overflow: auto;
 
       .not-found {
         text-align: center;
