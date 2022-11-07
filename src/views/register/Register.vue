@@ -181,9 +181,16 @@ export default {
           })
           .catch((err) => {
             this.$loading(false);
-            this.$bus.$emit("show-alert-chip", {
-              message: `${err}`,
-            });
+
+            if (err.response.data.error === "User already exists") {
+              this.$bus.$emit("show-alert-chip", {
+                message: "Usuário editado com sucesso.",
+              });
+
+              alert(
+                "O e-mail escolhido já está cadastrado. Tente outro ou recupere sua senha!"
+              );
+            }
           });
       } else {
         this.$loading(false);
