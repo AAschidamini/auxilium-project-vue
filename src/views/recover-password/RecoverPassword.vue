@@ -12,7 +12,8 @@
             <h1 class="recover--container_title">Recupere sua senha</h1>
             <p class="recover--container_description">
               Preencha o <b>e-mail</b> cadastrado para receber o código de
-              autenticação.
+              autenticação.<br />
+              Não esqueça de verificar a caixa de <b>Spam</b> do seu e-mail
             </p>
 
             <div v-if="!emailValidate" class="recover--container-form">
