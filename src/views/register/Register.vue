@@ -126,7 +126,7 @@ export default {
   },
   computed: {
     disabledSave() {
-      if (this.name === "" || this.email === "" || this.password === "") {
+      if (this.name === "" || this.email === "" || this.password.length < 4) {
         return true;
       } else {
         return false;
