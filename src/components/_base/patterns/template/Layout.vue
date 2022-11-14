@@ -5,42 +5,49 @@
     <div class="template--title">
       <h1>{{ title }}</h1>
     </div>
+    <div class="template--title-mobile">
+      <h1>{{ title }}</h1>
+    </div>
 
     <div class="template--container">
       <slot name="content"></slot>
+
+      <AlertChip
+        v-if="typeof alertChipMessage === 'string'"
+        v-model="showAlertChip"
+        :time="10000"
+      >
+        <p class="alert-chip-text">{{ alertChipMessage }}</p>
+
+        <template v-if="alertChipActionSlot" #action>
+          <component
+            :is="alertChipActionSlot.element"
+            :to="alertChipActionSlot.link"
+            class="alert-chip--action"
+            >{{ alertChipActionSlot.text }}</component
+          >
+        </template>
+      </AlertChip>
+
+      <AlertChip v-else v-model="showAlertChip" :time="10000">
+        <p
+          v-for="(text, i) in alertChipMessage"
+          :key="i"
+          class="alert-chip-text"
+        >
+          {{ text }}
+        </p>
+
+        <template v-if="alertChipActionSlot" #action>
+          <component
+            :is="alertChipActionSlot.element"
+            :to="alertChipActionSlot.link"
+            class="alert-chip--action"
+            >{{ alertChipActionSlot.text }}</component
+          >
+        </template>
+      </AlertChip>
     </div>
-
-    <AlertChip
-      v-if="typeof alertChipMessage === 'string'"
-      v-model="showAlertChip"
-      :time="10000"
-    >
-      <p class="alert-chip-text">{{ alertChipMessage }}</p>
-
-      <template v-if="alertChipActionSlot" #action>
-        <component
-          :is="alertChipActionSlot.element"
-          :to="alertChipActionSlot.link"
-          class="alert-chip--action"
-          >{{ alertChipActionSlot.text }}</component
-        >
-      </template>
-    </AlertChip>
-
-    <AlertChip v-else v-model="showAlertChip" :time="10000">
-      <p v-for="(text, i) in alertChipMessage" :key="i" class="alert-chip-text">
-        {{ text }}
-      </p>
-
-      <template v-if="alertChipActionSlot" #action>
-        <component
-          :is="alertChipActionSlot.element"
-          :to="alertChipActionSlot.link"
-          class="alert-chip--action"
-          >{{ alertChipActionSlot.text }}</component
-        >
-      </template>
-    </AlertChip>
   </div>
 </template>
 
@@ -115,11 +122,37 @@ export default {
     h1 {
       font-weight: bold;
     }
+
+    &-mobile {
+      display: none;
+    }
   }
 }
 
 .alert-chip-text {
   margin: 0;
   font-weight: bold;
+}
+
+@media screen and (max-width: 700px) {
+  .template {
+    &--container {
+      width: 100%;
+    }
+
+    &--title {
+      margin-top: 20px;
+      h1 {
+        display: none;
+      }
+
+      &-mobile {
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+    }
+  }
 }
 </style>

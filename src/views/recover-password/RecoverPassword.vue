@@ -220,4 +220,22 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 700px) {
+  .recover {
+    &--container {
+      &-form {
+        width: 100%;
+
+        &_send {
+          width: 100%;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

@@ -1,30 +1,58 @@
 <template>
   <div class="menu">
-    <div class="menu--left">
-      <router-link :to="{ name: 'About the Project' }" class="menu--left__logo">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <router-link
+        :to="{ name: 'About the Project' }"
+        class="navbar-brand menu__logo"
+      >
         <img src="../../../../assets/logos/aux-logo-ver.png" alt="Auxilium" />
       </router-link>
-
-      <router-link :to="{ name: 'About the Project' }" class="menu--left__link">
-        Sobre o projeto
-      </router-link>
-      <router-link :to="{ name: 'Chats' }" class="menu--left__link">
-        Chats
-      </router-link>
-      <router-link :to="{ name: 'Professional List' }" class="menu--left__link">
-        Profissionais
-      </router-link>
-    </div>
-    <div class="menu--right">
-      <router-link
-        :to="{ name: 'Dados do usuário' }"
-        class="menu--right__logoff"
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <b-icon icon="person-fill"></b-icon>
-        Conta
-      </router-link>
-      <div class="menu--right__logoff" @click="logoff()">Sair</div>
-    </div>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link :to="{ name: 'About the Project' }" class="nav-link">
+              Início
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Chats' }" class="nav-link">
+              Chats
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Professional List' }" class="nav-link">
+              Profissionais
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'Dados do usuário' }" class="nav-link">
+              <b-icon icon="person-fill"></b-icon>
+              Conta
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              @click="logoff()"
+              style="cursor: pointer; color: #3f3e9a; font-weight: bold"
+            >
+              Sair
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
 </template>
 
@@ -44,56 +72,28 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.menu {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  background: #008eaa;
+.navbar {
   padding: 0;
-  font-size: 20px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
   color: white;
-  font-weight: 500;
+  padding: 0 20px;
+}
+
+.menu {
+  padding: 0;
   text-align: center;
+  font-size: 20px;
+  background: #008eaa;
+  color: white;
 
-  &--left {
-    display: flex;
-    &__logo {
-      background: #3f3e9a;
+  &__logo {
+    background: #3f3e9a;
+    padding: 0;
 
-      img {
-        width: 40%;
-      }
-    }
-    &__link {
-      padding: 15px 40px;
-      cursor: pointer;
-
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      transition: 0.3s;
-
-      &:hover {
-        background: #3f3e9a;
-      }
-    }
-  }
-
-  &--right {
-    display: flex;
-    &__logoff {
-      padding: 15px 40px;
-      cursor: pointer;
-      float: right;
-
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      transition: 0.3s;
-
-      &:hover {
-        background: #3f3e9a;
-      }
+    img {
+      width: 40%;
     }
   }
 }

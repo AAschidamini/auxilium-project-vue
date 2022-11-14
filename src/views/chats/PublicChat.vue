@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Chat público">
+  <Layout title="Chat público" id="template">
     <template #content>
       <ChatPublic />
     </template>
@@ -20,8 +20,18 @@ export default {
   created() {
     this.$loading(true);
 
-    setTimeout(() => this.$loading(false), 10000);
+    setTimeout(() => this.$loading(false), 9000);
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@media screen and (max-width: 700px) {
+  #template {
+    &::v-deep {
+      .template--container {
+        padding: 30px 5px;
+      }
+    }
+  }
+}
+</style>

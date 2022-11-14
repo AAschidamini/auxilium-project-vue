@@ -82,4 +82,12 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 700px) {
+  .about {
+    &--logo {
+      width: 100%;
+    }
+  }
+}
 </style>

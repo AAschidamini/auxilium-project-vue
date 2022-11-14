@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Guard from "../services/middlewares.js";
 import AboutProject from "../views/AboutProject";
-import Login from "../views/Login";
+import Login from "../views/login/Login";
 import Register from "../views/register/Register";
 import RecoverPassword from "../views/recover-password/RecoverPassword";
 import ProfessionalList from "../views/ProfessionalList";

@@ -6,7 +6,7 @@
           <b-col class="login--container-form" col xs="12" sm="12">
             <div class="login--container-form_logo">
               <img
-                src="../assets/logos/auxilium-logo-default.png"
+                src="../../assets/logos/auxilium-logo-default.png"
                 alt="Auxilium"
               />
             </div>
@@ -49,7 +49,7 @@
 <script>
 import axios from "axios";
 import Cookie from "js-cookie";
-import LayoutOff from "../components/_base/patterns/template/LayoutOff";
+import LayoutOff from "../../components/_base/patterns/template/LayoutOff";
 
 export default {
   name: "Login",
@@ -165,6 +165,24 @@ export default {
 
           &:hover {
             background: #008eaa;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .login {
+    &--container {
+      &-form {
+        width: 100%;
+
+        &_send {
+          width: 100%;
+
+          button {
+            width: 100%;
           }
         }
       }

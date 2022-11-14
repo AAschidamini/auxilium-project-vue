@@ -84,7 +84,7 @@ export default {
       padding: 30px;
 
       &__title {
-        width: 300px;
+        width: 100%;
         font-size: 20px;
         font-weight: 600;
       }

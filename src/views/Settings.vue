@@ -215,7 +215,7 @@ export default {
   }
 
   &--user {
-    width: 700px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 
@@ -255,7 +255,7 @@ export default {
   }
 
   &--professional {
-    width: 700px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 
@@ -329,6 +329,17 @@ export default {
       &:hover {
         background: #008eaa;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .settings {
+    &--user {
+      width: 100%;
+    }
+    &--professional {
+      width: 100%;
     }
   }
 }

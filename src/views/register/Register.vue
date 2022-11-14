@@ -176,6 +176,7 @@ export default {
               this.$bus.$emit("show-alert-chip", {
                 message: "Cadastro realizado com sucesso!",
               });
+
               this.$router.push({ name: "Login" });
             }
           })
@@ -184,12 +185,8 @@ export default {
 
             if (err.response.data.error === "User already exists") {
               this.$bus.$emit("show-alert-chip", {
-                message: "Usuário editado com sucesso.",
+                message: err.response.data.error,
               });
-
-              alert(
-                "O e-mail escolhido já está cadastrado. Tente outro ou recupere sua senha!"
-              );
             }
           });
       } else {
@@ -297,6 +294,22 @@ export default {
 
         &:hover {
           background: #008eaa;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .register {
+    &-form {
+      width: 100%;
+
+      &_send {
+        width: 100%;
+
+        button {
+          width: 100%;
         }
       }
     }

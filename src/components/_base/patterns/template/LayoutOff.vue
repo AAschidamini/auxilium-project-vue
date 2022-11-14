@@ -2,39 +2,42 @@
   <div class="template">
     <div class="template--container">
       <slot />
+      <AlertChip
+        v-if="typeof alertChipMessage === 'string'"
+        v-model="showAlertChip"
+        :time="10000"
+      >
+        <p class="alert-chip-text">{{ alertChipMessage }}</p>
+
+        <template v-if="alertChipActionSlot" #action>
+          <component
+            :is="alertChipActionSlot.element"
+            :to="alertChipActionSlot.link"
+            class="alert-chip--action"
+            >{{ alertChipActionSlot.text }}</component
+          >
+        </template>
+      </AlertChip>
+
+      <AlertChip v-else v-model="showAlertChip" :time="10000">
+        <p
+          v-for="(text, i) in alertChipMessage"
+          :key="i"
+          class="alert-chip-text"
+        >
+          {{ text }}
+        </p>
+
+        <template v-if="alertChipActionSlot" #action>
+          <component
+            :is="alertChipActionSlot.element"
+            :to="alertChipActionSlot.link"
+            class="alert-chip--action"
+            >{{ alertChipActionSlot.text }}</component
+          >
+        </template>
+      </AlertChip>
     </div>
-
-    <AlertChip
-      v-if="typeof alertChipMessage === 'string'"
-      v-model="showAlertChip"
-      :time="10000"
-    >
-      <p class="alert-chip-text">{{ alertChipMessage }}</p>
-
-      <template v-if="alertChipActionSlot" #action>
-        <component
-          :is="alertChipActionSlot.element"
-          :to="alertChipActionSlot.link"
-          class="alert-chip--action"
-          >{{ alertChipActionSlot.text }}</component
-        >
-      </template>
-    </AlertChip>
-
-    <AlertChip v-else v-model="showAlertChip" :time="10000">
-      <p v-for="(text, i) in alertChipMessage" :key="i" class="alert-chip-text">
-        {{ text }}
-      </p>
-
-      <template v-if="alertChipActionSlot" #action>
-        <component
-          :is="alertChipActionSlot.element"
-          :to="alertChipActionSlot.link"
-          class="alert-chip--action"
-          >{{ alertChipActionSlot.text }}</component
-        >
-      </template>
-    </AlertChip>
   </div>
 </template>
 
@@ -112,5 +115,13 @@ export default {
 .alert-chip-text {
   margin: 0;
   font-weight: bold;
+}
+
+@media screen and (max-width: 700px) {
+  .template {
+    &--container {
+      width: 100%;
+    }
+  }
 }
 </style>

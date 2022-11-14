@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Chat profissional">
+  <Layout title="Chat profissional" id="template">
     <template #content>
       <div class="pvt">
         <!-- SAIR DO CHAT -->
@@ -101,7 +101,7 @@ export default {
       this.getUsersOnline();
     }
 
-    setTimeout(() => this.$loading(false), 10000);
+    setTimeout(() => this.$loading(false), 9000);
   },
 
   methods: {
@@ -247,6 +247,16 @@ export default {
         padding: 5px;
 
         text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #template {
+    &::v-deep {
+      .template--container {
+        padding: 30px 5px;
       }
     }
   }
