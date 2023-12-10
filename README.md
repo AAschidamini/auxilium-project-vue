@@ -23,7 +23,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### DEMO
-
-https://auxiliumapp.herokuapp.com/
