@@ -1,5 +1,7 @@
 # auxilium-vue
 
+OBS: É necessário ter o Node v14 para conseguir rodar o projeto.
+
 ## Instalar o projeto
 
 ```
